@@ -1,5 +1,6 @@
 package com.makesoftware.siga.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ public class User {
     private Long id;
 
     @NotBlank(message = "CPF" + DEFAULT_MANDATORY_MESSAGE)
+    @Column(unique = true)
     @Size(max = 11, message = "CPF deve ter no máximo 11 caracteres")
     private String cpf;
     private String rg;
@@ -28,6 +30,7 @@ public class User {
     private String lastName;
 
     @NotBlank(message = "Email" + DEFAULT_MANDATORY_MESSAGE)
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message = "Senha" + DEFAULT_MANDATORY_MESSAGE)
