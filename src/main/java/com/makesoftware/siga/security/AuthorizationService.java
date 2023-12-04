@@ -1,6 +1,7 @@
 package com.makesoftware.siga.security;
 
 import com.makesoftware.siga.repository.UserRepository;
+import com.makesoftware.siga.util.UserUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +16,7 @@ public class AuthorizationService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
-        return userRepository.findByCpf(cpf);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        return UserUtils.findUserByLogin(login, userRepository);
     }
 }

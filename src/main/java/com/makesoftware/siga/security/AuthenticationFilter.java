@@ -1,6 +1,7 @@
 package com.makesoftware.siga.security;
 
 import com.makesoftware.siga.repository.UserRepository;
+import com.makesoftware.siga.util.UserUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,8 +33,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         if (token != null) {
             String login = tokenService.validateToken(token);
 
-            UserDetails userDetails = userRepository.findByCpf(login);
-            if (userDetails == null) userDetails = userRepository.findByEmail(login);
+            UserDetails userDetails = UserUtils.findUserByLogin(login, userRepository);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

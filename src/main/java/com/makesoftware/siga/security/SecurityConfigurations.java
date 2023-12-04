@@ -24,6 +24,15 @@ public class SecurityConfigurations {
         this.authenticationFilter = authenticationFilter;
     }
 
+    private final String[] ENDPOINTS_AUTH_NOT_REQUIRED = {
+        "/users/login"
+    };
+
+    private final String[] ADMIN_ENDPOINTS = {
+        "/users",
+        "/users/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -31,8 +40,8 @@ public class SecurityConfigurations {
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
-                                .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.POST, ENDPOINTS_AUTH_NOT_REQUIRED).permitAll()
+                                .requestMatchers(ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

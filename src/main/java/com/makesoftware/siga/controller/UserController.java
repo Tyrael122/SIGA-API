@@ -1,9 +1,11 @@
 package com.makesoftware.siga.controller;
 
-import com.makesoftware.siga.AuthenticationData;
+import com.makesoftware.siga.security.AuthenticationData;
 import com.makesoftware.siga.model.User;
 import com.makesoftware.siga.repository.UserRepository;
+import com.makesoftware.siga.security.AuthenticationResponse;
 import com.makesoftware.siga.security.TokenService;
+import com.makesoftware.siga.util.Messages;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,27 +34,27 @@ public class UserController {
     }
 
     @PostMapping(ENDPOINT_PREFIX + "/login")
-    public ResponseEntity<String> login(@RequestBody AuthenticationData user) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationData user) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(user.login(), user.password());
         var authentication = authenticationManager.authenticate(usernamePassword);
 
         if (!authentication.isAuthenticated()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário ou senha incorretas.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, Messages.INVALID_CREDENTIALS.getMessage());
         }
 
         String token = tokenService.generateToken((UserDetails) authentication.getPrincipal());
-        return ResponseEntity.ok().body(token);
+        return ResponseEntity.ok().body(new AuthenticationResponse(token));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(ENDPOINT_PREFIX)
     public User create(@Valid @RequestBody User user) {
         if (userRepository.existsByCpf(user.getCpf())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "CPF já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, Messages.CPF_ALREADY_EXISTS.getMessage());
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já cadastrado");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, Messages.EMAIL_ALREADY_EXISTS.getMessage());
         }
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
