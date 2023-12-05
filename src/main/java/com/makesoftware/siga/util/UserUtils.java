@@ -10,10 +10,6 @@ public class UserUtils {
         User user = userRepository.findByCpf(login);
         if (user == null) user = userRepository.findByEmail(login);
 
-        if (user == null) {
-            throw new UsernameNotFoundException(Messages.USER_NOT_FOUND.getMessage());
-        }
-
         return user;
     }
 }

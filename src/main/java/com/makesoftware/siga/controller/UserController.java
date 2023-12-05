@@ -16,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -48,7 +50,39 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(ENDPOINT_PREFIX)
-    public User create(@Valid @RequestBody User user) {
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
+        validateUserDoesntExist(user);
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+
+        User savedUser = userRepository.save(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(savedUser);
+    }
+
+    @GetMapping(ENDPOINT_PREFIX)
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
+    @DeleteMapping(ENDPOINT_PREFIX + "/{id}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
+        if (!userRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        userRepository.deleteById(id);
+
+        // TODO: Maybe refactor this to a method in a class called ResponseUtils.
+        Map<String, String> response = new HashMap<>();
+        response.put("message", Messages.USER_DELETED.getMessage());
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    private void validateUserDoesntExist(User user) {
         if (userRepository.existsByCpf(user.getCpf())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, Messages.CPF_ALREADY_EXISTS.getMessage());
         }
@@ -56,15 +90,5 @@ public class UserController {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, Messages.EMAIL_ALREADY_EXISTS.getMessage());
         }
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
-        user.setPassword(encryptedPassword);
-
-        return userRepository.save(user);
-    }
-
-    @GetMapping(ENDPOINT_PREFIX)
-    public List<User> getUsers() {
-        return userRepository.findAll();
     }
 }

@@ -28,17 +28,26 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getTokenFromRequest(request);
+        handleRequest(request);
 
-        if (token != null) {
-            String login = tokenService.validateToken(token);
-
-            UserDetails userDetails = UserUtils.findUserByLogin(login, userRepository);
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
         filterChain.doFilter(request, response);
+    }
+
+    private void handleRequest(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+        if (token == null) {
+            return;
+        }
+
+        String login = tokenService.validateToken(token);
+
+        UserDetails userDetails = UserUtils.findUserByLogin(login, userRepository);
+        if (userDetails == null) {
+            return;
+        }
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {

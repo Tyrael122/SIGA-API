@@ -1,19 +1,16 @@
 package com.makesoftware.siga.model;
 
+import com.makesoftware.siga.util.Messages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
-import static com.makesoftware.siga.util.Defaults.DEFAULT_MANDATORY_MESSAGE;
 
 @Data
 @Entity
@@ -23,21 +20,21 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
-    @NotBlank(message = "CPF" + DEFAULT_MANDATORY_MESSAGE)
+    @NotBlank()
     @Column(unique = true)
-    @Size(max = 11, message = "CPF deve ter no máximo 11 caracteres")
+    @Size(max = 11)
     private String cpf;
     private String rg;
 
     private String firstName;
     private String lastName;
 
-    @NotBlank(message = "Email" + DEFAULT_MANDATORY_MESSAGE)
+    @NotBlank()
     @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "Senha" + DEFAULT_MANDATORY_MESSAGE)
-    @Size(min = 8, message = "Senha deve ter no mínimo 8 caracteres")
+    @NotBlank()
+    @Size(min = 8, message = Messages.PASSWORD_MIN_SIZE)
     private String password;
 
     private LocalDateTime birthDate;
