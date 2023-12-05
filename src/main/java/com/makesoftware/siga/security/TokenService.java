@@ -12,6 +12,8 @@ import java.time.*;
 @Service
 public class TokenService {
 
+//    private static final long MINUTES_FOR_EXPIRATION = 30;
+    private static final long MINUTES_FOR_EXPIRATION = 43200; // For development purposes only
     private final String secret = "secret";
     private final Algorithm signingAlgorithm = Algorithm.HMAC256(secret);
     private final String issuer = "makesoftware";
@@ -43,6 +45,6 @@ public class TokenService {
     }
 
     private Instant generateExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(MINUTES_FOR_EXPIRATION).toInstant(ZoneOffset.of("-03:00"));
     }
 }

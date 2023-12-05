@@ -1,10 +1,10 @@
 package com.makesoftware.siga.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -14,12 +14,17 @@ public class Subject {
     @GeneratedValue
     private Long id;
 
+    @NotBlank
     private String name;
+
     private String description;
     private Integer workload;
+
+    private Integer defaultSemester;
 
     @ManyToOne
     private Course course;
 
-    private Integer defaultSemester;
+    @OneToMany
+    private List<TeachableSubject> teachableSubjects;
 }

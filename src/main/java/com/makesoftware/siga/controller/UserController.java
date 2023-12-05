@@ -6,6 +6,7 @@ import com.makesoftware.siga.repository.UserRepository;
 import com.makesoftware.siga.security.AuthenticationResponse;
 import com.makesoftware.siga.security.TokenService;
 import com.makesoftware.siga.util.Messages;
+import com.makesoftware.siga.util.ControllerUtils;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,19 +68,14 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @GetMapping(ENDPOINT_PREFIX + "/{id}")
+    public User getUserById(@PathVariable long id) {
+        return ControllerUtils.findById(id, userRepository, Messages.USER_NOT_FOUND);
+    }
+
     @DeleteMapping(ENDPOINT_PREFIX + "/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
-        if (!userRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-
-        userRepository.deleteById(id);
-
-        // TODO: Maybe refactor this to a method in a class called ResponseUtils.
-        Map<String, String> response = new HashMap<>();
-        response.put("message", Messages.USER_DELETED.getMessage());
-
-        return ResponseEntity.ok().body(response);
+        return ControllerUtils.deleteById(id, userRepository, Messages.USER_DELETED);
     }
 
     private void validateUserDoesntExist(User user) {
