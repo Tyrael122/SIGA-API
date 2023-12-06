@@ -1,14 +1,23 @@
 package com.makesoftware.siga.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
 @Data
 @Entity
-public class Teacher extends User {
+public class Teacher {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @OneToOne
+    private User user;
+
+    private String urlCurriculoLattes;
 
     @OneToMany
     private List<TeachableSubject> teachingSubjects;

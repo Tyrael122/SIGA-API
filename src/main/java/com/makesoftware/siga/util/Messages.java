@@ -12,7 +12,8 @@ public enum Messages {
     USER_DELETED("User deleted"),
     SUBJECT_DELETED("Subject deleted"),
     COURSE_NOT_FOUND("Course not found"),
-    COURSE_DELETED("Course deleted");
+    COURSE_DELETED("Course deleted"),
+    TEACHER_NOT_FOUND("Teacher not found"), TEACHER_DELETED("Teacher deleted");
 
     public static final String PASSWORD_MIN_SIZE = "Password must be at least 8 characters long";
 

@@ -1,15 +1,20 @@
 package com.makesoftware.siga.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 @Entity
-public class Student extends User {
+public class Student {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @OneToOne
+    private User user;
 
     @ManyToOne
     private TeachableCourse enrolledCourse;
@@ -18,4 +23,5 @@ public class Student extends User {
     private List<TeachableSubject> enrolledSubjects;
 
     private Integer courseSemester;
+
 }
