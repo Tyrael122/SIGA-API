@@ -10,7 +10,9 @@ public enum Messages {
     CPF_ALREADY_EXISTS("CPF already exists"),
     EMAIL_ALREADY_EXISTS("Email already exists"),
     USER_DELETED("User deleted"),
-    SUBJECT_DELETED("Subject deleted");
+    SUBJECT_DELETED("Subject deleted"),
+    COURSE_NOT_FOUND("Course not found"),
+    COURSE_DELETED("Course deleted");
 
     public static final String PASSWORD_MIN_SIZE = "Password must be at least 8 characters long";
 

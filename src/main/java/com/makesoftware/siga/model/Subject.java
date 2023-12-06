@@ -22,9 +22,6 @@ public class Subject {
 
     private Integer defaultSemester;
 
-    @ManyToOne
-    private Course course;
-
     @OneToMany
     private List<TeachableSubject> teachableSubjects;
 }
