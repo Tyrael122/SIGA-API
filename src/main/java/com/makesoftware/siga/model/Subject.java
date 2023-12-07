@@ -21,7 +21,4 @@ public class Subject {
     private Integer workload;
 
     private Integer defaultSemester;
-
-    @OneToMany
-    private List<TeachableSubject> teachableSubjects;
 }

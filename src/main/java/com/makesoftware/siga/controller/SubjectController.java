@@ -3,6 +3,7 @@ package com.makesoftware.siga.controller;
 import com.makesoftware.siga.model.Subject;
 import com.makesoftware.siga.model.TeachableSubject;
 import com.makesoftware.siga.repository.SubjectRepository;
+import com.makesoftware.siga.util.EndpointPrefixes;
 import com.makesoftware.siga.util.Messages;
 import com.makesoftware.siga.util.ControllerUtils;
 import jakarta.validation.Valid;
@@ -15,7 +16,7 @@ import java.util.Map;
 @RestController
 public class SubjectController {
 
-    private final String ENDPOINT_PREFIX = "/subjects";
+    private final String ENDPOINT_PREFIX = EndpointPrefixes.SUBJECT;
 
     private final SubjectRepository subjectRepository;
 
@@ -41,21 +42,5 @@ public class SubjectController {
     @DeleteMapping(ENDPOINT_PREFIX + "/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         return ControllerUtils.deleteById(id, subjectRepository, Messages.SUBJECT_DELETED);
-    }
-
-    @GetMapping(ENDPOINT_PREFIX + "/{subjectId}/taught-subjects")
-    public List<TeachableSubject> getTaughtSubjects(@PathVariable Long subjectId) {
-        Subject subject = ControllerUtils.findById(subjectId, subjectRepository, Messages.SUBJECT_NOT_FOUND);
-
-        return subject.getTeachableSubjects();
-    }
-
-    @PostMapping(ENDPOINT_PREFIX + "/{subjectId}/taught-subjects")
-    public Subject createTaughtSubject(@PathVariable Long subjectId, @RequestBody @Valid TeachableSubject taughtSubject) {
-        Subject subject = ControllerUtils.findById(subjectId, subjectRepository, Messages.SUBJECT_NOT_FOUND);
-
-        subject.getTeachableSubjects().add(taughtSubject);
-
-        return subjectRepository.save(subject);
     }
 }

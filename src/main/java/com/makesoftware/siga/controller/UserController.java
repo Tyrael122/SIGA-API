@@ -5,6 +5,7 @@ import com.makesoftware.siga.model.User;
 import com.makesoftware.siga.repository.UserRepository;
 import com.makesoftware.siga.security.AuthenticationResponse;
 import com.makesoftware.siga.security.TokenService;
+import com.makesoftware.siga.util.EndpointPrefixes;
 import com.makesoftware.siga.util.Messages;
 import com.makesoftware.siga.util.ControllerUtils;
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 @RestController
 public class UserController {
-    private final String ENDPOINT_PREFIX = "/users";
+    private final String ENDPOINT_PREFIX = EndpointPrefixes.USER;
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;

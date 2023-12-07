@@ -38,12 +38,12 @@ public class SecurityConfigurations {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(
-                        authorizeHttpRequests -> authorizeHttpRequests
-                                .requestMatchers(HttpMethod.POST, ENDPOINTS_AUTH_NOT_REQUIRED).permitAll()
-                                .requestMatchers(ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
-                                .anyRequest().authenticated()
-                )
+//                .authorizeHttpRequests(
+//                        authorizeHttpRequests -> authorizeHttpRequests
+//                                .requestMatchers(HttpMethod.POST, ENDPOINTS_AUTH_NOT_REQUIRED).permitAll()
+//                                .requestMatchers(ADMIN_ENDPOINTS).hasRole(Role.ADMIN.name())
+//                                .anyRequest().authenticated()
+//                )
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

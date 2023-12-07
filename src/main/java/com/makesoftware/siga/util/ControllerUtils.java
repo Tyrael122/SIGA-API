@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class ControllerUtils {
+    // TODO: Create a tryFind that accepts a function and returns T,
+    //  and throws a ResponseStatusException with the message if it fails.
+
     public static <T> T findById(long id, JpaRepository<T, Long> repository, Messages errorMessage) {
         try {
             return repository.findById(id).orElseThrow();

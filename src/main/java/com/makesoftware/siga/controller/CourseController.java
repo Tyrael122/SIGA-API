@@ -46,6 +46,7 @@ public class CourseController {
         return ControllerUtils.deleteById(id, courseRepository, Messages.COURSE_DELETED);
     }
 
+    // TODO: Improve this method so as to accept a list of subjects, not just one.
     @PostMapping(ENDPOINT_PREFIX + "/{courseId}/subjects")
     public Course addSubject(@PathVariable Long courseId, @RequestParam long subjectId) {
         return updateCourseSubjects(courseId, subjectId,

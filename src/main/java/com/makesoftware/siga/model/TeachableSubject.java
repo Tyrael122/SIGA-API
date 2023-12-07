@@ -1,5 +1,7 @@
 package com.makesoftware.siga.model;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.makesoftware.siga.repository.TeacherRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,6 +10,7 @@ import java.util.List;
 @Data
 @Entity
 public class TeachableSubject {
+
     @Id
     @GeneratedValue
     private Long id;

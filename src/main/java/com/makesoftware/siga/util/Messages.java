@@ -13,7 +13,10 @@ public enum Messages {
     SUBJECT_DELETED("Subject deleted"),
     COURSE_NOT_FOUND("Course not found"),
     COURSE_DELETED("Course deleted"),
-    TEACHER_NOT_FOUND("Teacher not found"), TEACHER_DELETED("Teacher deleted");
+    TEACHER_NOT_FOUND("Teacher not found"),
+    TEACHER_DELETED("Teacher deleted"),
+    TEACHABLE_SUBJECT_NOT_FOUND("Teachable subject not found"),
+    TEACHABLE_SUBJECT_DELETED("Teachable subject deleted");
 
     public static final String PASSWORD_MIN_SIZE = "Password must be at least 8 characters long";
 
@@ -21,5 +24,10 @@ public enum Messages {
 
     Messages(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return message;
     }
 }

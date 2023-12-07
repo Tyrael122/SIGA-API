@@ -18,7 +18,4 @@ public class Teacher {
     private User user;
 
     private String urlCurriculoLattes;
-
-    @OneToMany
-    private List<TeachableSubject> teachingSubjects;
 }
