@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static com.makesoftware.siga.util.UserUtils.addRoleToUser;
+import static com.makesoftware.siga.util.UserUtils.removeRoleFromUser;
+
+// TODO: See the possibility of merging this controller with the StudentController
 @RestController
 public class TeacherController {
     private final String ENDPOINT_PREFIX = EndpointPrefixes.TEACHER;
@@ -48,13 +52,12 @@ public class TeacherController {
 
     @DeleteMapping(ENDPOINT_PREFIX + "/{id}")
     public ResponseEntity<Map<String, String>> deleteById(@PathVariable long id) {
-        return ControllerUtils.deleteById(id, teacherRepository, Messages.TEACHER_DELETED);
-    }
-
-    private static void addRoleToUser(User user, Role roleToAdd) {
-        List<Role> userRoles = user.getRoles();
-        userRoles.add(roleToAdd);
+        Teacher teacher = ControllerUtils.findById(id, teacherRepository, Messages.TEACHER_NOT_FOUND);
         
-        user.setRoles(userRoles);
+        User user = teacher.getUser();
+        removeRoleFromUser(teacher.getUser(), Role.TEACHER);
+        userRepository.save(user);
+        
+        return ControllerUtils.deleteById(id, teacherRepository, Messages.TEACHER_DELETED);
     }
 }

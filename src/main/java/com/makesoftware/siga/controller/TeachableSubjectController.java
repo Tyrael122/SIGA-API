@@ -20,6 +20,8 @@ import java.util.Map;
 @RestController
 public class TeachableSubjectController {
 
+    private final String ENDPOINT_PREFIX = EndpointPrefixes.TEACHABLE_SUBJECT;
+
     private final SubjectRepository subjectRepository;
     private final TeachableSubjectRepository teachableSubjectRepository;
     private final TeacherRepository teacherRepository;
@@ -33,7 +35,7 @@ public class TeachableSubjectController {
         this.teacherRepository = teacherRepository;
     }
 
-    @PostMapping(EndpointPrefixes.SUBJECT + "/{subjectId}/teachable-subjects")
+    @PostMapping(EndpointPrefixes.SUBJECT + "/{subjectId}" + ENDPOINT_PREFIX)
     public TeachableSubject createTaughtSubject(@PathVariable Long subjectId, @RequestBody TeachableSubjectDTO teachableSubjectDTO) {
         TeachableSubject teachableSubject = parseDto(teachableSubjectDTO);
 
@@ -46,6 +48,11 @@ public class TeachableSubjectController {
     @GetMapping(EndpointPrefixes.SUBJECT + "/{subjectId}/teachable-subjects")
     public List<TeachableSubject> getAllTaughtSubjects(@PathVariable Long subjectId) {
         return teachableSubjectRepository.findAllByBasisSubject_Id(subjectId);
+    }
+
+    @GetMapping(EndpointPrefixes.SUBJECT + "/{subjectId}/teachable-subjects/{id}")
+    public TeachableSubject getTaughtSubjectById(@PathVariable Long subjectId, @PathVariable Long id) {
+        return ControllerUtils.findById(id, teachableSubjectRepository, Messages.TEACHABLE_SUBJECT_NOT_FOUND);
     }
 
     @DeleteMapping(EndpointPrefixes.SUBJECT + "/{subjectId}/teachable-subjects/{id}")

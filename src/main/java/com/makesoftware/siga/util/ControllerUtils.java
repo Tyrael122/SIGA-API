@@ -13,6 +13,8 @@ public class ControllerUtils {
     // TODO: Create a tryFind that accepts a function and returns T,
     //  and throws a ResponseStatusException with the message if it fails.
 
+
+    // TODO: See the possibility of using the GlobalExceptionHandler to handle the exceptions
     public static <T> T findById(long id, JpaRepository<T, Long> repository, Messages errorMessage) {
         try {
             return repository.findById(id).orElseThrow();
