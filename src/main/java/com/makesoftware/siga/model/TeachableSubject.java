@@ -1,7 +1,5 @@
 package com.makesoftware.siga.model;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.makesoftware.siga.repository.TeacherRepository;
 import jakarta.persistence.*;
 import lombok.Data;
 

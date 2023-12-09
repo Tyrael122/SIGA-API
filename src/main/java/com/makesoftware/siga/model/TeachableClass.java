@@ -15,8 +15,9 @@ public class TeachableClass {
     @GeneratedValue
     private Long id;
 
-    private LocalDateTime plannedStartTimestamp;
-    private LocalDateTime timestamp;
+    private String classTitle;
+
+    private LocalDateTime startTimestamp;
 
     @OneToOne
     private ClassPresenceList presenceList;
