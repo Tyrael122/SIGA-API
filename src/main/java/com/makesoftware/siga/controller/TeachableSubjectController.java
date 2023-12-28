@@ -1,9 +1,11 @@
 package com.makesoftware.siga.controller;
 
 import com.makesoftware.siga.dto.TeachableSubjectDTO;
+import com.makesoftware.siga.model.ClassTimeBlock;
 import com.makesoftware.siga.model.Subject;
 import com.makesoftware.siga.model.TeachableSubject;
 import com.makesoftware.siga.model.Teacher;
+import com.makesoftware.siga.repository.ClassTimeBlockRepository;
 import com.makesoftware.siga.repository.SubjectRepository;
 import com.makesoftware.siga.repository.TeachableSubjectRepository;
 import com.makesoftware.siga.repository.TeacherRepository;
@@ -14,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,18 +28,20 @@ public class TeachableSubjectController {
     private final SubjectRepository subjectRepository;
     private final TeachableSubjectRepository teachableSubjectRepository;
     private final TeacherRepository teacherRepository;
+    private final ClassTimeBlockRepository classTimeBlockRepository;
 
     private final ModelMapper modelMapper;
 
-    public TeachableSubjectController(SubjectRepository subjectRepository, TeachableSubjectRepository teachableSubjectRepository, ModelMapper modelMapper, TeacherRepository teacherRepository) {
+    public TeachableSubjectController(SubjectRepository subjectRepository, TeachableSubjectRepository teachableSubjectRepository, ModelMapper modelMapper, TeacherRepository teacherRepository, ClassTimeBlockRepository classTimeBlockRepository) {
         this.subjectRepository = subjectRepository;
         this.teachableSubjectRepository = teachableSubjectRepository;
         this.modelMapper = modelMapper;
         this.teacherRepository = teacherRepository;
+        this.classTimeBlockRepository = classTimeBlockRepository;
     }
 
     @PostMapping(EndpointPrefixes.SUBJECT + "/{subjectId}" + ENDPOINT_PREFIX)
-    public TeachableSubject createTaughtSubject(@PathVariable Long subjectId, @RequestBody TeachableSubjectDTO teachableSubjectDTO) {
+    public TeachableSubject createTeachableSubject(@PathVariable Long subjectId, @RequestBody TeachableSubjectDTO teachableSubjectDTO) {
         TeachableSubject teachableSubject = parseDto(teachableSubjectDTO);
 
         Subject subject = ControllerUtils.findById(subjectId, subjectRepository, Messages.SUBJECT_NOT_FOUND);
@@ -65,6 +70,13 @@ public class TeachableSubjectController {
 
         Teacher teacher = ControllerUtils.findById(teachableSubjectDTO.getTeacherId(), teacherRepository, Messages.TEACHER_NOT_FOUND);
         teachableSubject.setTeacher(teacher);
+
+        List<ClassTimeBlock> schedule = new ArrayList<>();
+        for (long classTimeBlockId : teachableSubjectDTO.getClassTimeBlockIds()) {
+            schedule.add(ControllerUtils.findById(classTimeBlockId, classTimeBlockRepository, Messages.CLASS_TIME_BLOCK_NOT_FOUND));
+        }
+        
+        teachableSubject.setSchedule(schedule);
 
         return teachableSubject;
     }

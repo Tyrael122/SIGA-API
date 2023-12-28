@@ -1,12 +1,10 @@
 package com.makesoftware.siga.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -15,9 +13,13 @@ public class TeachableClass {
     @GeneratedValue
     private Long id;
 
-    private String classTitle;
+    private String subject;
 
-    private LocalDateTime startTimestamp;
+    @NotNull
+    private LocalDate date;
+
+    @ManyToOne
+    private ClassTimeBlock classTimeBlock;
 
     @OneToOne
     private ClassPresenceList presenceList;

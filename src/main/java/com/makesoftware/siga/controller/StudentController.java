@@ -11,6 +11,7 @@ import com.makesoftware.siga.repository.UserRepository;
 import com.makesoftware.siga.util.ControllerUtils;
 import com.makesoftware.siga.util.EndpointPrefixes;
 import com.makesoftware.siga.util.Messages;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class StudentController {
     }
 
     @PostMapping(EndpointPrefixes.USER + "/{userId}" + ENDPOINT_PREFIX)
-    public Student create(@PathVariable long userId, @RequestBody StudentDTO studentDto) {
+    public Student create(@PathVariable long userId, @RequestBody @Valid StudentDTO studentDto) {
         Student student = modelMapper.map(studentDto, Student.class);
 
         TeachableCourse enrolledCourse = ControllerUtils.findById(studentDto.getEnrolledCourseId(), teachableCourseRepository, Messages.TEACHABLE_COURSE_NOT_FOUND);

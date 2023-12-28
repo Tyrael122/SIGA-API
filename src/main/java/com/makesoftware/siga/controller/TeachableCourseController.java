@@ -16,7 +16,6 @@ import java.util.Map;
 @RestController
 public class TeachableCourseController {
 
-
     private static final String ENDPOINT_PREFIX = EndpointPrefixes.TEACHABLE_COURSE;
     private final TeachableCourseRepository teachableCourseRepository;
     private final CourseRepository courseRepository;

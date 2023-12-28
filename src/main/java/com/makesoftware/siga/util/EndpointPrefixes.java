@@ -15,4 +15,5 @@ public class EndpointPrefixes {
     public static final String TEACHABLE_COURSE = "/teachable-courses";
     public static final String SCHEDULE = "/schedule";
     public static final String SEMESTER = "/semester";
+    public static final String TEACHABLE_CLASS = "/classes";
 }

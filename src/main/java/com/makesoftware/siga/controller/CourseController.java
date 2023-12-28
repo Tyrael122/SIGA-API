@@ -1,12 +1,14 @@
 package com.makesoftware.siga.controller;
 
 import com.makesoftware.siga.model.Course;
+import com.makesoftware.siga.model.Student;
 import com.makesoftware.siga.model.Subject;
 import com.makesoftware.siga.repository.CourseRepository;
 import com.makesoftware.siga.repository.SubjectRepository;
 import com.makesoftware.siga.util.ControllerUtils;
 import com.makesoftware.siga.util.Messages;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +22,12 @@ public class CourseController {
     private final String ENDPOINT_PREFIX = "/courses";
     private final CourseRepository courseRepository;
     private final SubjectRepository subjectRepository;
+    private final ModelMapper modelMapper;
 
-    public CourseController(CourseRepository courseRepository, SubjectRepository subjectRepository) {
+    public CourseController(CourseRepository courseRepository, SubjectRepository subjectRepository, ModelMapper modelMapper) {
         this.courseRepository = courseRepository;
         this.subjectRepository = subjectRepository;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping(ENDPOINT_PREFIX)
@@ -32,7 +36,12 @@ public class CourseController {
     }
 
     @PostMapping(ENDPOINT_PREFIX)
-    public Course create(@RequestBody @Valid Course course) {
+    public Course create(@RequestBody @Valid CourseDTO courseDto) {
+        Course course = modelMapper.map(courseDto, Course.class);
+
+        List<Subject> subjects = subjectRepository.findAllById(courseDto.getSubjectIds());
+        course.setSubjects(subjects);
+
         return courseRepository.save(course);
     }
 
@@ -44,13 +53,6 @@ public class CourseController {
     @DeleteMapping(ENDPOINT_PREFIX + "/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         return ControllerUtils.deleteById(id, courseRepository, Messages.COURSE_DELETED);
-    }
-
-    // TODO: Improve this method so as to accept a list of subjects, not just one.
-    @PostMapping(ENDPOINT_PREFIX + "/{courseId}/subjects")
-    public Course addSubject(@PathVariable Long courseId, @RequestParam long subjectId) {
-        return updateCourseSubjects(courseId, subjectId,
-                (loadedCourse, loadedSubject) -> loadedCourse.getSubjects().add(loadedSubject));
     }
 
     @DeleteMapping(ENDPOINT_PREFIX + "/{courseId}/subjects")

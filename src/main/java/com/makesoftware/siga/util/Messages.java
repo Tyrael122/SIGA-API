@@ -20,7 +20,9 @@ public enum Messages {
     STUDENT_NOT_FOUND("Student not found"),
     STUDENT_DELETED("Student deleted"),
     TEACHABLE_COURSE_NOT_FOUND("Teachable course not found"),
-    TEACHABLE_COURSE_DELETED("Teachable course deleted");
+    TEACHABLE_COURSE_DELETED("Teachable course deleted"),
+    CLASS_TIME_BLOCK_NOT_FOUND("Class time block not found"),
+    SCHOOL_SEMESTER_NEEDED("A school semester is needed to complete this action and none has been found");
 
     public static final String PASSWORD_MIN_SIZE = "Password must be at least 8 characters long";
 

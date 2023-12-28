@@ -11,7 +11,5 @@ public class TeachableSubjectDTO {
 
     private Long teacherId;
 
-    private List<Integer> classTimeBlockIds;
-
-    private List<Integer> classesIds;
+    private List<Long> classTimeBlockIds;
 }

@@ -41,6 +41,8 @@ public class ScheduleController {
             classTimeBlocks.addAll(generateClassTimeBlocks(schedule));
         }
 
+        classTimeBlockRepository.saveAll(classTimeBlocks);
+
         return ResponseEntity.ok(classTimeBlocks);
     }
 
@@ -62,8 +64,9 @@ public class ScheduleController {
         }
     }
 
+    // TODO: Make Unit test for this.
     private List<ClassTimeBlock> generateClassTimeBlocks(ScheduleDTO schedule) {
-        List<ClassTimeBlock> savedClassTimeBlocks = new ArrayList<>();
+        List<ClassTimeBlock> classTimeBlocks = new ArrayList<>();
 
         LocalTime classesStartTime = schedule.getClassesStartTime();
         LocalTime classesEndTime = schedule.getClassesEndTime();
@@ -73,13 +76,12 @@ public class ScheduleController {
         while (isClassDurationWithinEndTime(schedule, classStartTime, classesEndTime)) {
             ClassTimeBlock classTimeBlock = createClassTimeBlock(schedule, classStartTime);
 
-            classTimeBlockRepository.save(classTimeBlock);
-            savedClassTimeBlocks.add(classTimeBlock);
+            classTimeBlocks.add(classTimeBlock);
 
             classStartTime = classStartTime.plusMinutes(schedule.getDurationInMinutes() + schedule.getBreakDurationInMinutes());
         }
 
-        return savedClassTimeBlocks;
+        return classTimeBlocks;
     }
 
     private static boolean isClassDurationWithinEndTime(ScheduleDTO schedule, LocalTime classStartTime, LocalTime classesEndTime) {
