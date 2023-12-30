@@ -1,7 +1,7 @@
 package com.makesoftware.siga.controller;
 
+import com.makesoftware.siga.dto.CourseDTO;
 import com.makesoftware.siga.model.Course;
-import com.makesoftware.siga.model.Student;
 import com.makesoftware.siga.model.Subject;
 import com.makesoftware.siga.repository.CourseRepository;
 import com.makesoftware.siga.repository.SubjectRepository;
@@ -9,7 +9,6 @@ import com.makesoftware.siga.util.ControllerUtils;
 import com.makesoftware.siga.util.Messages;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

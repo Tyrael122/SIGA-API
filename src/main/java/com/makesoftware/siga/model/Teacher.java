@@ -17,5 +17,7 @@ public class Teacher {
     @OneToOne
     private User user;
 
+    private GraduationLevel graduationLevel;
+
     private String urlCurriculoLattes;
 }

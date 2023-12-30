@@ -16,6 +16,8 @@ public class Course {
     @GeneratedValue
     private Long id;
 
+    private String acronym;
+
     @NotBlank
     private String name;
     private String description;

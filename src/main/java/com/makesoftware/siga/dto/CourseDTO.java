@@ -1,4 +1,4 @@
-package com.makesoftware.siga.controller;
+package com.makesoftware.siga.dto;
 
 import lombok.Data;
 
@@ -8,6 +8,8 @@ import java.util.List;
 public class CourseDTO {
 
     private Long id;
+
+    private String acronym;
 
     private String name;
     private String description;
